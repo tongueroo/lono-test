@@ -1,0 +1,37 @@
+<% instance_name = "instance#{@index+1}" %>
+    "<%= instance_name %>": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "InstanceType": "<%= instance[:type] %>",
+        "SecurityGroups": [
+          {
+            "Ref": "InstanceSecurityGroup"
+          }
+        ],
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        <%= partial "ec2_volumes.json.erb" %>
+        "ImageId": {
+          "Fn::FindInMap": [
+            "AWSRegionArch2AMI",
+            {
+              "Ref": "AWS::Region"
+            },
+            {
+              "Fn::FindInMap": [
+                "AWSInstanceType2Arch",
+                {
+                  "Ref": "InstanceType"
+                },
+                "Arch"
+              ]
+            }
+          ]
+        }
+      },
+      "UserData":
+        { "Fn::Base64" : {
+          "Fn::Join" : ["", <%= user_data("user_data.sh.erb") %> ]
+        }}
+    }
