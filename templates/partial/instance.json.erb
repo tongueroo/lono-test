@@ -2,7 +2,7 @@
     "<%= instance_name %>": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "InstanceType": "<%= instance[:type] %>",
+        "InstanceType": "<%= @instance[:type] %>",
         "SecurityGroups": [
           {
             "Ref": "InstanceSecurityGroup"
