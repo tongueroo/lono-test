@@ -1,8 +1,13 @@
 <% instance_name = "instance#{@index+1}" %>
+<%
+  hash = @instance
+  keyname = hash.keys.first
+  instance_data = hash[keyname]
+%>
     "<%= instance_name %>": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "InstanceType": "<%= @instance[:type] %>",
+        "InstanceType": "<%= instance_data[:type] %>",
         "SecurityGroups": [
           {
             "Ref": "InstanceSecurityGroup"
